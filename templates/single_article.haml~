@@ -1,0 +1,8 @@
+<div class = "article">
+<h1>&Uumlberschrift</h1>
+#{article_text}
+<div class = "articlemeta">
+ver&oumlffentlicht am #{dateString} | Tags: Test, Moep, Eintrag, Artikel
+</div>
+
+</div>
