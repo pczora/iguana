@@ -1,0 +1,4 @@
+How does it work?
+-----------------
+
+The articles are formatted using **Markdown**, which is a nice way of avoiding HTML-Code while using your favorite text editor.
