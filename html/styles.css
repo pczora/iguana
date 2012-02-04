@@ -25,6 +25,12 @@ body {
     margin: auto;
 }
 
+#header a, a:visited {
+    color: #eeeeee;
+    text-decoration: none;
+}
+
+
 #content {
     margin: auto;
     width: 600px;
@@ -32,6 +38,7 @@ body {
 
 #content a {
     text-decoration: none;
+    color: #333333;
 }
 
 #content a:visited {

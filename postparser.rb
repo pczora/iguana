@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'maruku'
 require 'haml'
+require 'yaml'
 
 class PostParser
 
@@ -18,7 +19,9 @@ class PostParser
     @htmlIndexFile = File.new("html/index.html", "r+")
     @singleArticleTemplate = File.new(@templateDir.path + "single_article.haml", "r")
     @singleArticleEngine = Haml::Engine.new(@singleArticleTemplate.read)
-
+    @configFile = YAML.load(File.new("config.yaml"))
+    @blogTitle = @configFile["blogTitle"]
+    puts @blogTitle
     @htmlIndexFile.truncate(0)
     
   end 
@@ -37,9 +40,23 @@ class PostParser
       dateString = filename_split[2] + "." + filename_split[1] + "." + filename_split[0]
       
       file = File.new(articleDir.path + filename)
-
+      puts "Parsing Metadata..."
+      contents = file.read;
+      parts = contents.split("META_END");
+      meta = YAML.load(parts[0])
+      title =  meta["title"]
+      tags = meta["tags"]
+      tagString = String.new
+      
+      tags.each do |tag|
+        tagString << tag
+        if tag != tags.last
+          tagString << ", "
+        end
+      end
+      
       puts "Converting Markdown to HTML..."
-      article_text = Maruku.new(file.read).to_html 
+      article_text = Maruku.new(parts[1]).to_html 
       
       filename_split.slice!(0, 3)
       output_filename = filename_split.join("_")
@@ -49,15 +66,15 @@ class PostParser
       
       
 
-      renderedSingleArticle = @singleArticleEngine.render(Object.new, :article_text => article_text, :dateString => dateString)
-      renderedSingleArticlePage = @indexEngine.render(Object.new, :postsString => renderedSingleArticle)
-      renderedArticle = @articleEngine.render(Object.new, :article_text => article_text, :dateString => dateString, :filename => output_filename)
+      renderedSingleArticle = @singleArticleEngine.render(Object.new, :blogTitle => @blogTitle,  :title => title, :article_text => article_text, :dateString => dateString, :tagString => tagString)
+      #renderedSingleArticlePage = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => renderedSingleArticle)
+      renderedArticle = @articleEngine.render(Object.new, :title => title,  :article_text => article_text, :dateString => dateString, :tagString => tagString, :filename => output_filename)
       
 
       
       outputFile = File.new(htmlArticleDir.path + output_filename, "w")
       puts "Writing " + output_filename
-      outputFile.write(renderedSingleArticlePage)
+      outputFile.write(renderedSingleArticle)
      # puts renderedArticle
       postsString << renderedArticle
     end
@@ -65,7 +82,7 @@ class PostParser
     
     #puts postsString
     puts "Rendering index.html"
-    renderedIndex = @indexEngine.render(Object.new, :postsString => postsString)
+    renderedIndex = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => postsString)
     @htmlIndexFile.write(renderedIndex)
   end
 end
