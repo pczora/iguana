@@ -6,6 +6,7 @@ class ArticleFetcher
 
   def initialize
     @articleDir = Dir.new("articles/")
+    @renderedArticleDir = Dir.new("html/articles/")
     @configFile = YAML.load(File.new("config.yaml"))
   end
 
@@ -25,10 +26,29 @@ class ArticleFetcher
     end
     articleArray
   end
+
+  def fetchAllRendered
+    articleArray = Array.new
+    #articleHash = Hash.new
+    filenames = @renderedArticleDir.entries
+    filenames.delete(".")
+    filenames.delete("..")
+    filenames.delete("css")
+   # filenames.sort!
+   # filenames.reverse!
+    
+    filenames.each do |filename|
+      contents = File.open(@renderedArticleDir.path + filename, "r").read
+      # articleHash.merge!({filename => contents})
+      articleArray << {filename => contents}
+    end
+    articleArray
+  end
 end
 
+
 #fetcher = ArticleFetcher.new
-#articles =  fetcher.fetchAll
+#articles =  fetcher.fetchAllRendered
 #puts articles
 
 

@@ -58,7 +58,7 @@ class PostParser
       puts "Converting Markdown to HTML..."
       article_text = Maruku.new(parts[1]).to_html 
       
-      filename_split.slice!(0, 3)
+     # filename_split.slice!(0, 3)
       output_filename = filename_split.join("_")
       output_filename.chomp!(".markdown")
       output_filename << ".html"
@@ -85,7 +85,13 @@ class PostParser
     renderedIndex = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => postsString)
     @htmlIndexFile.write(renderedIndex)
   end
-end
 
-p = PostParser.new
-p.parse
+  def parseDate(filename) 
+    puts filename
+    filename_split = filename.split("_")
+    dateString = filename_split[2] + "." + filename_split[1] + "." + filename_split[0]
+    dateString 
+  end
+end
+#p = PostParser.new
+#p.parse

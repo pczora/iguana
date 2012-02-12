@@ -25,31 +25,24 @@ body {
     margin: auto;
 }
 
-#header a, a:visited {
-    color: #eeeeee;
-    text-decoration: none;
-}
-
-
 #content {
     margin: auto;
     width: 600px;
 }
 
-#content a {
-    text-decoration: none;
-    color: #333333;
-}
 
-#content a:visited {
-    color: #333333;
+a {
     text-decoration: none;
 }
 
-#content a:hover {
-    color: #777777;
+a.title {
+    color: #333333;
+    text-decoration: none;
 }
 
+a.title:hover {
+    color: #555555;
+}
 
 .article {
     color: #333333;
@@ -61,10 +54,6 @@ body {
 
 .article h1 {
      font-family: 'Vollkorn', serif;
-}
-
-.articletitle:hover {
-    color: red;
 }
 
 .articlemeta {
