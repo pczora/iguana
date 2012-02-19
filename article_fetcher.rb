@@ -46,9 +46,3 @@ class ArticleFetcher
   end
 end
 
-
-#fetcher = ArticleFetcher.new
-#articles =  fetcher.fetchAllRendered
-#puts articles
-
-

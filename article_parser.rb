@@ -3,7 +3,7 @@ require 'maruku'
 require 'haml'
 require 'yaml'
 
-class PostParser
+class ArticleParser
 
   #TODO: Clean up attributes
   attr_accessor :articleDir, :htmlArticleDir, :templateDir, :articleTemplate, :indexTemplate
