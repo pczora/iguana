@@ -2,6 +2,7 @@
 require 'maruku'
 require 'haml'
 require 'yaml'
+require './article_fetcher.rb'
 
 class ArticleParser
 
@@ -21,13 +22,15 @@ class ArticleParser
     @singleArticleEngine = Haml::Engine.new(@singleArticleTemplate.read)
     @configFile = YAML.load(File.new("config.yaml"))
     @blogTitle = @configFile["blogTitle"]
-    puts @blogTitle
+    #puts @blogTitle
+    @articlesPerPage = @configFile["articlesPerPage"]
     @htmlIndexFile.truncate(0)
-    
+    @articleFetcher = ArticleFetcher.new
   end 
  
   def parse
     puts "Rendering posts..."
+    renderedArticles = Array.new
     filenames = @articleDir.entries
     filenames.delete(".")
     filenames.delete("..")
@@ -67,9 +70,10 @@ class ArticleParser
       
 
       renderedSingleArticle = @singleArticleEngine.render(Object.new, :blogTitle => @blogTitle,  :title => title, :article_text => article_text, :dateString => dateString, :tagString => tagString)
+      
       #renderedSingleArticlePage = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => renderedSingleArticle)
       renderedArticle = @articleEngine.render(Object.new, :title => title,  :article_text => article_text, :dateString => dateString, :tagString => tagString, :filename => output_filename)
-      
+      renderedArticles.push(renderedArticle)
 
       
       outputFile = File.new(htmlArticleDir.path + output_filename, "w")
@@ -78,12 +82,51 @@ class ArticleParser
      # puts renderedArticle
       postsString << renderedArticle
     end
-    #TODO: Render index
+   
     
     #puts postsString
-    puts "Rendering index.html"
-    renderedIndex = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => postsString)
-    @htmlIndexFile.write(renderedIndex)
+    #puts renderedArticles
+    puts "Rendering index.html..."
+    count = renderedArticles.size
+    fraction = count % @articlesPerPage
+    puts fraction
+    if fraction == 0
+      pages = count / @articlesPerPage
+    else
+      pages = (count / @articlesPerPage + 0.5).round
+    end
+    puts "Pages: " + pages.to_s
+    
+    renderedArticles.reverse!
+    for i in 1..pages do
+      if i == 1
+        filename = "index.html"
+        prevLink = ""
+      else
+        filename = "page" + i.to_s + ".html"
+        if i == 2
+          prevLink = "<a href = \"index.html\"> Vorherige Seite </a>"
+        else
+          prevLink = "<a href = \"page" + (i-1).to_s + ".html\"> Vorherige Seite </a>"
+        end
+      end
+      if i < pages
+        nextLink = "<a href = \"page" + (i+1).to_s + ".html\"> nächste Seite </a>"
+      else
+        nextLink = ""
+      end
+      
+      file = File.new("./html/" + filename, "w")
+      
+      articlesString = String.new
+      articlesString = renderedArticles.pop(@articlesPerPage).reverse.join("\n")
+      renderedIndex = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => articlesString, :prevLink => prevLink, :nextLink => nextLink)
+      file.write(renderedIndex)
+    end
+    
+    #puts articlesString
+    #renderedIndex = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => postsString, :prevLink => prevLink, :nextLink => nextLink)
+    # @htmlIndexFile.write(renderedIndex)
   end
 
   def parseDate(filename) 
@@ -93,5 +136,5 @@ class ArticleParser
     dateString 
   end
 end
-#p = PostParser.new
-#p.parse
+p = ArticleParser.new
+p.parse

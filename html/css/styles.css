@@ -63,7 +63,13 @@ a.title:hover {
 }
 
 #footer {
+    font-family: 'Merriweather', serif;
+    font-size: 12px;
     width: 600px;
-    height: 10px;
     margin: auto;
     background: #444444;
+}
+
+#footer a {
+    color: #eeeeee
+}
