@@ -23,6 +23,8 @@ body {
     color: #eeeeee;
     font-size: xx-large;
     margin: auto;
+    padding-left: 10px;
+    padding-top: 5px;
 }
 
 #content {
@@ -50,10 +52,16 @@ a.title:hover {
     font-size: 14px;
     text-align: left;
     margin-bottom: 75px;
+    line-height: 1.5em;
 }
 
 .article h1 {
      font-family: 'Vollkorn', serif;
+     margin-top: 40px;
+}
+
+.article p {
+    margin-left: 10px;
 }
 
 .articlemeta {
