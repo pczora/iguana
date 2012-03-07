@@ -10,6 +10,7 @@ class RssGenerator
     @blogTitle = configFile["blogTitle"]
     @baseUrl = configFile["baseUrl"]
     @rssDesc = configFile["rssDesc"]
+    @author = configFile["author"]
     @fetcher = ArticleFetcher.new
     @articleMarkdownDir = ("./articles/")
     @version = "2.0"
@@ -55,31 +56,36 @@ class RssGenerator
   # Generates RSS feed based on the raw Markdown input
 
   def updateFeed(n = 10)
-    articles = @fetcher.fetchAll
+    articles = @fetcher.fetchAll.reverse
     articles.slice!(0...articles.length - n)
     
     rssContent = RSS::Maker.make(@version) do |m|
       m.channel.title = @blogTitle
       m.channel.link = @baseUrl
       m.channel.description = @rssDesc
+     
       date = String.new
       meta = String.new
       htmlFile = String.new
       description = String.new
       articles.each do |article|
         article.each do |filename, content|
-          htmlFile = filename
+          htmlFile = filename.chomp(".markdown")
+          #filename.chomp!(".markdown");
+          htmlFile += ".html"
           puts filename
           #metaString = File.new(@articleMarkdownDir + filename.chomp(".html") + ".markdown", "r")
           meta = YAML.load(content.split("META_END")[0])
           date =  @parser.parseDate(filename)
           description = Maruku.new(content.split("META_END")[1]).to_html
         end
+   
         i = m.items.new_item
         i.title = meta["title"]
         i.link = @baseUrl + "articles/" + htmlFile 
         i.date = date
         i.description = description
+        i.author = @author
       end
     end
     #articles
