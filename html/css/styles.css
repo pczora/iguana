@@ -38,12 +38,18 @@ a {
 }
 
 a.title {
+    font-family: 'Vollkorn', serif;
     color: #333333;
     text-decoration: none;
+    text-align: left;
 }
 
 a.title:hover {
     color: #555555;
+}
+
+.article_container {
+    text-align: left;
 }
 
 .article {
@@ -55,13 +61,23 @@ a.title:hover {
     line-height: 1.5em;
 }
 
+.article a {
+    text-decoration: none;
+    color: #666666
+}
 .article h1 {
      font-family: 'Vollkorn', serif;
      margin-top: 40px;
+     font-size: 35px;
 }
 
 .article p {
     margin-left: 10px;
+}
+
+.article img {
+    display: block;
+    margin: auto;
 }
 
 .articlemeta {
@@ -69,6 +85,7 @@ a.title:hover {
     font-size: small;
     text-align: right;
 }
+
 
 #footer {
     font-family: 'Merriweather', serif;
