@@ -57,10 +57,11 @@ class ArticleParser
           tagString << ", "
         end
       end
-      
+      #puts "Replacing _IMGPATH_..."
+      #parts[1].gsub!("_IMGPATH_", "Bilderpfad")
       puts "Converting Markdown to HTML..."
-      article_text = Maruku.new(parts[1]).to_html 
-      
+      single_article_text = Maruku.new(parts[1].gsub("_IMGPATH_", "../../images")).to_html 
+      index_article_text = Maruku.new(parts[1].gsub("_IMGPATH_", "../images")).to_html
      # filename_split.slice!(0, 3)
       output_filename = filename_split.join("_")
       output_filename.chomp!(".markdown")
@@ -69,10 +70,10 @@ class ArticleParser
       
       
 
-      renderedSingleArticle = @singleArticleEngine.render(Object.new, :blogTitle => @blogTitle,  :title => title, :article_text => article_text, :dateString => dateString, :tagString => tagString)
+      renderedSingleArticle = @singleArticleEngine.render(Object.new, :blogTitle => @blogTitle,  :title => title, :article_text => single_article_text, :dateString => dateString, :tagString => tagString)
       
       #renderedSingleArticlePage = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => renderedSingleArticle)
-      renderedArticle = @articleEngine.render(Object.new, :title => title,  :article_text => article_text, :dateString => dateString, :tagString => tagString, :filename => output_filename)
+      renderedArticle = @articleEngine.render(Object.new, :title => title,  :article_text => index_article_text, :dateString => dateString, :tagString => tagString, :filename => output_filename)
       renderedArticles.push(renderedArticle)
 
       
@@ -120,6 +121,7 @@ class ArticleParser
       
       articlesString = String.new
       articlesString = renderedArticles.pop(@articlesPerPage).reverse.join("\n")
+      articlesString.gsub("_IMGPATH_", "../../images/")
       renderedIndex = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => articlesString, :prevLink => prevLink, :nextLink => nextLink)
       file.write(renderedIndex)
     end
