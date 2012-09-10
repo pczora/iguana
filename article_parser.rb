@@ -22,14 +22,14 @@ class ArticleParser
     @singleArticleEngine = Haml::Engine.new(@singleArticleTemplate.read)
     @configFile = YAML.load(File.new("config.yaml"))
     @blogTitle = @configFile["blogTitle"]
-    #puts @blogTitle
     @articlesPerPage = @configFile["articlesPerPage"]
-    @htmlIndexFile.truncate(0)
+    #@htmlIndexFile.truncate(0)
     @articleFetcher = ArticleFetcher.new
   end 
  
   def parse
     puts "Rendering posts..."
+    @htmlIndexFile.truncate(0)
     renderedArticles = Array.new
     filenames = @articleDir.entries
     filenames.delete(".")
@@ -139,4 +139,3 @@ class ArticleParser
   end
 end
 p = ArticleParser.new
-p.parse

@@ -1,0 +1,9 @@
+blogTitle: "title"
+baseUrl: "example.com/"
+rssDesc: "RSS Description"
+articlesPerPage: 2
+author: "Author"
+
+ftp_host: "hostname"
+ftp_user: "username"
+ftp_password: "password"
