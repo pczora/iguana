@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'rubygems'
 require './article_parser.rb'
 require './rss_generator.rb'
 require './recursive_ftp.rb'
