@@ -47,7 +47,7 @@ class RssGenerator
       end
     end
     #articles
-    puts rssContent
+    #puts rssContent
     rssFile = File.new("./html/feed.rss", "r+")
     rssFile.truncate(0)
     rssFile.write(rssContent)
@@ -56,7 +56,7 @@ class RssGenerator
   # Generates RSS feed based on the raw Markdown input
 
   def updateFeed(n = 10)
-    articles = @fetcher.fetchAll.reverse
+    articles = @fetcher.fetchAll
     articles.slice!(0...articles.length - n)
     
     rssContent = RSS::Maker.make(@version) do |m|
@@ -73,7 +73,7 @@ class RssGenerator
           htmlFile = filename.chomp(".markdown")
           #filename.chomp!(".markdown");
           htmlFile += ".html"
-          puts filename
+          #puts filename
           #metaString = File.new(@articleMarkdownDir + filename.chomp(".html") + ".markdown", "r")
           meta = YAML.load(content.split("META_END")[0])
           date =  @parser.parseDate(filename)
@@ -89,15 +89,13 @@ class RssGenerator
       end
     end
     #articles
-    puts rssContent
+    #puts rssContent
     rssFile = File.new("./html/feed.rss", "r+")
     rssFile.truncate(0)
     rssFile.write(rssContent)
   end
 end
 
-#gen = RssGenerator.new
-#gen.updateFeed
 
 
 
