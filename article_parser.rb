@@ -48,15 +48,7 @@ class ArticleParser
       parts = contents.split("META_END");
       meta = YAML.load(parts[0])
       title =  meta["title"]
-      tags = meta["tags"]
-      tagString = String.new
-      
-      tags.each do |tag|
-        tagString << tag
-        if tag != tags.last
-          tagString << ", "
-        end
-      end
+
       #puts "Replacing _IMGPATH_..."
       #parts[1].gsub!("_IMGPATH_", "Bilderpfad")
       puts "Converting Markdown to HTML..."
@@ -70,10 +62,10 @@ class ArticleParser
       
       
 
-      renderedSingleArticle = @singleArticleEngine.render(Object.new, :blogTitle => @blogTitle,  :title => title, :article_text => single_article_text, :dateString => dateString, :tagString => tagString)
+      renderedSingleArticle = @singleArticleEngine.render(Object.new, :blogTitle => @blogTitle,  :title => title, :article_text => single_article_text, :dateString => dateString)
       
       #renderedSingleArticlePage = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => renderedSingleArticle)
-      renderedArticle = @articleEngine.render(Object.new, :title => title,  :article_text => index_article_text, :dateString => dateString, :tagString => tagString, :filename => output_filename)
+      renderedArticle = @articleEngine.render(Object.new, :title => title,  :article_text => index_article_text, :dateString => dateString, :filename => output_filename)
       renderedArticles.push(renderedArticle)
 
       
