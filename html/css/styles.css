@@ -58,8 +58,8 @@ a.title:hover { color: #555555; }
 }
 .article h1 {
    font-family: 'Vollkorn', serif;
-	margin-top: 40px;
-	font-size: 35px;
+   margin-top: 40px;
+   font-size: 35px;
 }
 
 .article p { margin-left: 10px; }
@@ -88,7 +88,7 @@ a.title:hover { color: #555555; }
 
 
 @media screen and (min-width: 620px) {
-	
+
 	#header { width: 600px; }
 	
 	#content { width: 600px; }
