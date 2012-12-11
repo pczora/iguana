@@ -81,7 +81,7 @@ a.title:hover { color: #555555; }
 #footer {
     font-family: 'Merriweather', serif;
     font-size: 12px;
-    width: 600px;
+    width: 100%;
     margin: auto;
     background: #444444;
 }
@@ -101,4 +101,6 @@ a.title:hover { color: #555555; }
 	}
 	
 	.article img { width: 100%; }
+	
+	#footer { width: 600px; }
 }
