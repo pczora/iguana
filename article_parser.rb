@@ -62,7 +62,7 @@ class ArticleParser
       
       
 
-      renderedSingleArticle = @singleArticleEngine.render(Object.new, :blogTitle => @blogTitle,  :title => title, :article_text => single_article_text, :dateString => dateString)
+      renderedSingleArticle = @singleArticleEngine.render(Object.new, :article_title => title, :blogTitle => @blogTitle,  :title => title, :article_text => single_article_text, :dateString => dateString)
       
       #renderedSingleArticlePage = @indexEngine.render(Object.new, :blogTitle => @blogTitle, :postsString => renderedSingleArticle)
       renderedArticle = @articleEngine.render(Object.new, :title => title,  :article_text => index_article_text, :dateString => dateString, :filename => output_filename)
